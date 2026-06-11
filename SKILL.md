@@ -1,0 +1,232 @@
+---
+name: netcore-design-system
+description: Apply the Netcore design system for any UI generation. Enforces Manrope font, brand blue #2F68E5, white inputs, 8px radius. CRITICAL — never violate: (1) inputs always white #FFFFFF, (2) font always Manrope, (3) toggles on-state always #2F68E5 blue never green. Trigger on /ds or /design-system commands, and automatically when any request combines a UI action (build, create, add, show, design, make, update) with Netcore product vocabulary: campaign, audience, segment, journey, automation, subscriber, contact, broadcast, email template, A/B test, analytics, open rate, CTR, settings, user management, wizard, builder, workflow, push notification, trigger, flow, or any SaaS admin interface.
+---
+
+# Netcore Design System
+
+Apply these rules to every component, screen, and form. Do not invent values — use what is here.
+
+---
+
+## PRIMARY — Design system rules
+
+### Non-negotiable rules
+
+**Font: Manrope only.**
+Add to every project: `@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');`
+Never use Inter, system-ui, or Tailwind's default font stack.
+
+**Page and surface colours.**
+Page background: `#F4F8FF`. Card background: `#FFFFFF`. Input background: `#FFFFFF`. Never dark backgrounds on any of these.
+
+**Inputs are always white.**
+`background: #FFFFFF` on every input, select, textarea. This is the single most common AI generation failure — dark or grey inputs are wrong.
+
+**Brand blue is `#2F68E5`.** Primary buttons, focus rings, active states, links. Never approximate with Tailwind's `blue-500` or `blue-600`.
+
+**Border radius is 8px everywhere.** Buttons, inputs, cards, modals, badges — all 8px. Modal overlay uses 12px. Pills use 999px.
+
+**Toggles: on = `#2F68E5` (blue). Never green.** Green is reserved for success badges and alerts only.
+
+**Disabled states: bg `#FAFAFA`, border `#D4D4D4`, text `#9494AE`.** Never use brand colours on disabled elements.
+
+**Text hierarchy: three tiers only.**
+- Primary `#17173A` — headings, labels, values
+- Secondary `#6F6F8D` — descriptions, helper text
+- Tertiary `#9494AE` — placeholders, table column headers
+
+**Never invent values.** If a colour, size, or spacing value isn't in the token table below, it doesn't belong in the output. Do not approximate with Tailwind utilities like `bg-blue-500` or `text-gray-400`.
+
+---
+
+### Token reference
+
+| Role | Hex |
+|---|---|
+| Brand blue | `#2F68E5` |
+| Brand blue hover | `#4F7EF0` |
+| Brand blue active | `#1F51BE` |
+| Brand blue subtle | `#EDF1FF` |
+| Page background | `#F4F8FF` |
+| Card / input background | `#FFFFFF` |
+| Text primary | `#17173A` |
+| Text secondary | `#6F6F8D` |
+| Text tertiary / placeholder | `#9494AE` |
+| Border default | `#D9D9E8` |
+| Border hover | `#9898B0` |
+| Border focus | `#2F68E5` |
+| Disabled background | `#FAFAFA` |
+| Disabled border | `#D4D4D4` |
+| Disabled text | `#9494AE` |
+| Error | `#C0201A` |
+| Warning border | `#DC6803` |
+| Warning text | `#B54708` |
+| Success | `#079455` |
+| Side nav background | `#291E30` |
+
+Full `:root` block → `references/tokens.md`
+
+---
+
+### Core components — copy these exactly
+
+#### Input
+```css
+.input {
+  background: #FFFFFF;
+  border: 1px solid #D9D9E8;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #17173A;
+  outline: none;
+  width: 100%;
+}
+.input:hover    { border-color: #9898B0; background: #F6F8FF; }
+.input:focus    { border: 1.5px solid #2F68E5; box-shadow: 0 0 0 4px rgba(47,104,229,0.15); }
+.input:disabled { background: #FAFAFA; border-color: #D4D4D4; color: #9494AE; }
+.input::placeholder { color: #9494AE; }
+
+.input-label {
+  font-size: 12px; font-weight: 600;
+  color: #17173A; display: block; margin-bottom: 6px;
+}
+```
+
+#### Primary button
+```css
+.btn-primary {
+  background: #2F68E5;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.btn-primary:hover    { background: #4F7EF0; }
+.btn-primary:active   { background: #1F51BE; }
+.btn-primary:disabled { background: #F5F5F5; color: #9494AE; cursor: not-allowed; }
+```
+
+#### Secondary button (outlined)
+```css
+.btn-secondary {
+  background: #FFFFFF;
+  color: #2F68E5;
+  border: 1.5px solid #2F68E5;
+  border-radius: 8px;
+  font-size: 14px; font-weight: 600;
+  padding: 10px 20px; cursor: pointer;
+}
+.btn-secondary:hover    { background: #EDF1FF; }
+.btn-secondary:disabled { background: #FAFAFA; border-color: #D4D4D4; color: #9494AE; }
+```
+
+#### Card
+```css
+.card {
+  background: #FFFFFF;
+  border: 1px solid #EBEBF5;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(23,23,58,0.10);
+  padding: 24px;
+}
+```
+
+#### Badge / status chip
+
+| Variant | Background | Text |
+|---|---|---|
+| Brand | `#EDF1FF` | `#1F51BE` |
+| Success | `#ECFDF3` | `#067647` |
+| Warning | `#FFFAEB` | `#B54708` |
+| Error | `#FFEBE8` | `#9A1B14` |
+| Neutral | `#EBEBF5` | `#383845` |
+
+```css
+.badge { font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 8px; }
+```
+
+#### Toggle / switch
+```css
+.toggle { width: 44px; height: 24px; background: #D9D9E8; border-radius: 999px; position: relative; cursor: pointer; border: none; }
+.toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: #FFFFFF; border-radius: 50%; }
+.toggle.on        { background: #2F68E5; }   /* BLUE — never green */
+.toggle.on::after { transform: translateX(20px); }
+```
+
+#### Alert / banner
+| Type | Background | Left border (3px) | Text |
+|---|---|---|---|
+| Info | `#EDF1FF` | `#2F68E5` | `#1F51BE` |
+| Warning | `#FFFAEB` | `#DC6803` | `#B54708` |
+| Error | `#FFEBE8` | `#C0201A` | `#9A1B14` |
+| Success | `#ECFDF3` | `#079455` | `#067647` |
+
+---
+
+### Typography
+
+Font: **Manrope** only.
+
+| Use case | Size | Weight | Colour |
+|---|---|---|---|
+| Page headings | 20–24px | 600 | `#17173A` |
+| Body copy | 14px | 500 | `#17173A` |
+| Helper / description | 13px | 500 | `#6F6F8D` |
+| Input labels | 12px | 600 | `#17173A` |
+| Placeholders, table headers | 13px | 500 | `#9494AE` |
+| Badges, captions | 10–12px | 600 | (badge variant colour) |
+
+---
+
+## SECONDARY — When to trigger
+
+### Explicit triggers
+- `/ds [prompt]` or `/design-system [prompt]`
+
+### Implicit triggers — Netcore product vocabulary
+Trigger automatically when a UI request contains any of these words:
+
+**Product:** campaign · journey · automation · audience · segment · subscriber · contact · broadcast · template · trigger · workflow · A/B test
+
+**Channels:** email builder · SMS · push notification · WhatsApp · in-app message
+
+**Analytics:** open rate · CTR · conversion · delivery rate · bounce · engagement · impressions
+
+**UI contexts:** campaign wizard · segment builder · audience filter · user management · invite user · settings page · data table · analytics dashboard
+
+### Does not trigger
+- Generic requests with no Netcore context: `"build a landing page"`, `"create a sign-up form"` — too generic
+- Informational: `"what is a design system"`, `"explain tokens"` — no UI to build
+
+### PM vocabulary → component mapping
+When a PM describes UI in plain language, map it to design system components:
+
+| PM says | Use this |
+|---|---|
+| `button`, `CTA`, `action` | `btn-primary` (`#2F68E5`) or `btn-secondary` (outlined) |
+| `modal`, `popup`, `dialog` | Modal overlay `rgba(23,23,58,0.5)`, card `bg-white rounded-[12px]` |
+| `table`, `list view`, `data grid` | Table `th` = tertiary `#9494AE` uppercase, `td` = primary `#17173A`, row hover `#F6F8FF` |
+| `input`, `text field`, `form field` | `bg-white border-[#D9D9E8] rounded-[8px]` — never dark bg |
+| `tag`, `badge`, `status chip` | Badge token variants only: brand/success/warning/error/neutral |
+| `toggle`, `switch` | On = `#2F68E5` blue, Off = `#D9D9E8` — never green |
+| `sidebar`, `nav` | bg `#291E30`, items `rgba(255,255,255,0.70)`, active `rgba(47,104,229,0.25)` |
+| `cramped` / `more space` | Adjust padding within token scale — never invent pixel values |
+| `more rounded` | Step up from `8px` to `12px` — never `rounded-3xl` or custom values |
+
+---
+
+## Reference files
+
+| File | When to read |
+|---|---|
+| `references/tokens.md` | Before writing `index.css` — full `:root` block |
+| `references/components.md` | Input states, all button variants, nav, modal, table |
+| `references/extended.md` | Stepper, tabs, pagination, accordion, data table, avatar, slider |
