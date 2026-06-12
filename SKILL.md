@@ -230,3 +230,28 @@ When a PM describes UI in plain language, map it to design system components:
 | `references/tokens.md` | Before writing `index.css` — full `:root` block |
 | `references/components.md` | Input states, all button variants, nav, modal, table |
 | `references/extended.md` | Stepper, tabs, pagination, accordion, data table, avatar, slider |
+
+---
+
+## Campaign creation flow
+
+When building any campaign creation screen (Email, WhatsApp, SMS, Push, RCS, or any new channel):
+
+- **Live reference:** https://product-netcore.github.io/campaign-creation-flow/
+- **Structure docs:** https://product-netcore.github.io/campaign-creation-flow/#/docs
+- **Source repo:** https://github.com/Product-Netcore/campaign-creation-flow
+
+**Precedence:** 3.0 rules win. Mirror the reference for structure and layout; apply 3.0 token overrides below.
+
+| What the reference shows | 3.0 override |
+|---|---|
+| Font: Nunito Sans | → **Manrope** |
+| Next Step bg: `#143F93` | → **`#2F68E5`** |
+| Input bg: `#F8F8F8` | → **`#FFFFFF`** (inputs always white) |
+| Toggle on: `#00C48C` green | → **`#2F68E5`** blue (toggles on = blue, never green) |
+| Active stepper: `#00C48C` green | → **`#2F68E5`** blue |
+| Completed stepper: `#00C48C` green | → `#15B079` green |
+| Border radius: 6px | → **`8px`** |
+| Borders: `#DDE2EE` | → `#D9D9E8` (`var(--border-default)`) |
+
+Do not invent a new layout — copy `CampaignSetupStep.tsx` and change only the fields.

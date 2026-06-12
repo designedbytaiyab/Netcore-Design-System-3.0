@@ -1479,10 +1479,86 @@ Building on the base table in §6.8:
 
 ## 15. Campaign Creation Flow
 
-> **Pattern:** Full-page wizard used for creating and configuring marketing campaigns (email, SMS, push, etc.).  
-> Composed of four layers — Campaign Wizard Nav Header · Step Progress Bar · Two-Column Wizard Layout · Summary Sidebar.  
-> **Source Figma frame:** [`Raman AI — Co-Marketer` node 15775:4579](https://www.figma.com/design/PpMyMSpfteIiBlbsBYryx2/Raman-AI---Co-Marketer---Co-Pilot?node-id=15775-4579)  
-> ⚠️ The Figma source uses `Nunito Sans` and `#0A8FFD`. These are **not** our tokens. Always apply Manrope + `#2F68E5` when implementing this pattern.
+> **Pattern:** The shared shell for every campaign creation wizard — Email, WhatsApp, SMS, Push, RCS, and any new channel. Same shell. Same stepper. Same summary panel. Only the step content changes per channel.
+>
+> **Live reference:** <https://product-netcore.github.io/campaign-creation-flow/>  
+> **Structure docs:** <https://product-netcore.github.io/campaign-creation-flow/#/docs>  
+> **Source repo:** <https://github.com/Product-Netcore/campaign-creation-flow>  
+> **Figma frame:** [`Raman AI — Co-Marketer` node 15775:4579](https://www.figma.com/design/PpMyMSpfteIiBlbsBYryx2/Raman-AI---Co-Marketer---Co-Pilot?node-id=15775-4579)
+>
+> **Precedence rule — read this first:**  
+> Design 3.0 token overrides (Manrope, `#2F68E5`, white inputs, 8px radius) **always win** over the 2.0 reference values.  
+> Mirror the 2.0 reference for **structure and layout only** when no 3.0 rule exists for that case.  
+> Do not invent a new layout — mirror the live reference exactly.
+
+### Visual structure
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│  Navbar  (✉ Campaign name            SAVE   NEXT STEP   ✕)    │
+├────────────────────────────────────────────────────────────────┤
+│  Stepper (✓ Setup → Content → Audience → Schedule)             │
+│                        ID: 1234  ✓ Last saved: 39 mins ago     │
+├──────────────────────────────────┬─────────────────────────────┤
+│  <Channel-specific step content> │  Summary                    │
+│  (white card, light-blue page)   │  ▲ Setup                    │
+│                                  │    Campaign Name:           │
+│                                  │    Tags:                    │
+│                                  │  ▼ Audience                 │
+│                                  │  ▼ Content                  │
+│                                  │  ▼ Schedule                 │
+└──────────────────────────────────┴─────────────────────────────┘
+```
+
+### 2.0 reference tokens → 3.0 override map
+
+The live reference is built on Design 2.0. Apply these overrides any time you implement the pattern with 3.0 tokens.
+
+| Element | 2.0 reference value | 3.0 override | Notes |
+|---|---|---|---|
+| Font family | Nunito Sans | **Manrope** | Always |
+| "Next Step" button bg | `#143F93` Cobalt Blue | **`#2F68E5`** Brand blue | |
+| Input background | `#F8F8F8` | **`#FFFFFF`** | Inputs are always white in 3.0 |
+| Toggle on-state | `#00C48C` green | **`#2F68E5`** blue | 3.0 rule: toggles on = blue, never green |
+| Page background | `#F4F8FF` | `#F4F8FF` | Same — no change |
+| All borders | `#DDE2EE` | `var(--border-default)` `#D9D9E8` | Very close — use our token |
+| Primary text | `#17173A` | `var(--text-primary)` `#17173A` | Same |
+| Secondary text | `#6F6F8D` | `var(--text-secondary)` `#6F6F8D` | Same |
+| Card bg | `#FFFFFF` | `#FFFFFF` | Same |
+| Stepper completed circle | `#00C48C` green | `#15B079` | Green stays — completed = success |
+| Stepper active circle | `#00C48C` green | **`#2F68E5`** blue | Active = brand blue in 3.0 |
+| Border radius | `rounded-md` (6px) | **`8px`** | 3.0 universal radius |
+
+---
+
+### Using the reference layout component
+
+The reference repo exports a `CampaignCreationLayout` wrapper. Copy `CampaignSetupStep.tsx` as your template for any new channel — only change the fields inside it.
+
+```tsx
+<CampaignCreationLayout
+  campaignName="WhatsApp Diwali blast"
+  campaignId="9342"
+  lastSaved="just now"
+  steps={whatsappSteps}            // canonical: Setup → Content → Audience → Schedule
+  summarySections={whatsappSummary}
+  onSave={...}
+  onNextStep={...}
+  onClose={...}
+>
+  <WhatsAppSetupStep />            // your channel-specific fields go here
+</CampaignCreationLayout>
+```
+
+**Channel icon rule:** Pick from `lucide-react`. Email → `Mail`, WhatsApp → `MessageCircle`, SMS → `MessageSquare`, Push → `Bell`. Icon container: `bg-[#F4F8FF]`, icon color: `#2F68E5` (3.0 override — reference uses `#143F93`).
+
+**Step content card wrapper — always use this:**
+
+```tsx
+<div className="bg-white border border-[#D9D9E8] rounded-[8px] p-8 max-w-[760px]">
+  {/* channel-specific fields */}
+</div>
+```
 
 ---
 
@@ -1570,8 +1646,10 @@ Horizontal progress indicator placed directly below the campaign nav header. Sho
 | State | Indicator | Label style | Connector colour |
 |---|---|---|---|
 | **Completed** | `#15B079` green circle + white ✓ checkmark | 14px Manrope SemiBold · `var(--text-primary)` | `#2F68E5` |
-| **Active** | `#2F68E5` blue circle + white step number | 14px Manrope SemiBold · `var(--text-primary)` | — |
+| **Active** | `#2F68E5` blue circle + white step number | 14px Manrope SemiBold · `var(--text-primary)` + `2px #2F68E5` underline | — |
 | **Pending** | White circle + `var(--border-default)` border + grey number | 14px Manrope Regular · `var(--text-tertiary)` | `var(--border-default)` |
+
+> **2.0 reference difference:** The reference uses `#00C48C` green for both completed AND active. In 3.0, active = blue `#2F68E5`, completed = green `#15B079`. Green is reserved for success/completed states only.
 
 **Structure rules:**
 - Container height: `48px` · Padding: `0 24px`
@@ -1872,19 +1950,53 @@ The sticky right panel. Displays a live, read-only preview of inputs across all 
 ### 15.6 AI Generation Rules — Campaign Creation Flow
 
 > Apply these rules in addition to the global rules in §0.5 whenever the prompt mentions "campaign creation", "campaign wizard", "campaign setup", "new campaign", or "campaign builder".
+>
+> **Primary source:** Mirror <https://product-netcore.github.io/campaign-creation-flow/> for structure. Apply 3.0 token overrides from the table above.
+
+#### Reference form-field patterns (3.0 token versions)
+
+**Text input:**
+```tsx
+<label className="block text-xs font-semibold text-[#17173A] mb-1.5">
+  Field label <span className="text-[#C0201A]">*</span>
+</label>
+<input className="w-full h-10 bg-white border border-[#D9D9E8] rounded-[8px] px-3 text-sm
+  font-medium text-[#17173A] placeholder:text-[#9494AE]
+  focus:outline-none focus:ring-1 focus:ring-[#2F68E5]/40 focus:border-[#2F68E5]" />
+```
+
+**Toggle row (in bordered card):**
+```tsx
+<div className="border border-[#D9D9E8] rounded-[8px] p-4 flex items-start justify-between">
+  <div>
+    <p className="text-sm font-bold text-[#17173A]">Setting name</p>
+    <p className="text-xs text-[#6F6F8D] mt-1">Description.</p>
+  </div>
+  <Switch className="data-[state=checked]:bg-[#2F68E5]" />  {/* 3.0: blue, not green */}
+</div>
+```
+
+**Section heading:**
+```tsx
+<h2 className="text-lg font-bold text-[#17173A]">Section title</h2>
+<p className="text-sm text-[#6F6F8D] mt-1">Short description.</p>
+```
 
 | Rule | ✅ DO | ❌ DON'T |
 |---|---|---|
-| **Font** | Manrope at all sizes, all weights | Nunito Sans / Nunito (that's the Figma source font — not our token) |
-| **Primary action colour** | `#2F68E5` for Next Step + all primary CTAs | `#0A8FFD` — this is the Figma file's token, not Netcore DS 3.0 |
-| **Active step indicator** | `#2F68E5` filled circle + white number | Purple or any other colour |
-| **Completed step indicator** | `#15B079` green circle + white checkmark | Blue for completed — completed = green only |
-| **Page background** | `var(--bg-subtle)` (`#F5F7FF`) | Pure white `#FFFFFF` or dark backgrounds as the page fill |
-| **Card border-radius** | `8px` on all cards | 6px, 5px, or 4px |
+| **Font** | Manrope at all sizes, all weights | Nunito Sans / Nunito (reference 2.0 font — not our token) |
+| **Primary action colour** | `#2F68E5` for Next Step + all primary CTAs | `#143F93` (2.0 Cobalt Blue) or `#0A8FFD` (Figma source) |
+| **Active step indicator** | `#2F68E5` filled circle + white number + `2px` underline | Green for active — green is for completed only |
+| **Completed step indicator** | `#15B079` green circle + white checkmark | Blue for completed steps |
+| **Toggle on-state** | `#2F68E5` blue | `#00C48C` green (that's the 2.0 toggle — 3.0 always blue) |
+| **Input background** | `#FFFFFF` white | `#F8F8F8` (reference 2.0 value) |
+| **Page background** | `#F4F8FF` | Pure white or dark page background |
+| **Card border-radius** | `8px` | `rounded-md` / 6px (reference 2.0 value) |
 | **Column layout** | Flex row — `flex:1` main + `width:320px` sidebar | Equal-column CSS grid or single-column stack |
-| **Toggle/switch active colour** | `#2F68E5` | Purple, grey, or teal |
-| **Section card title size** | 18px Manrope Bold | 20px+ inside a card (reserve 20px for page-level headings only) |
+| **Step order** | Setup → Content → Audience → Schedule | Change the order or skip a step |
+| **Close button** | Always include `×` in the navbar | Omit it — every wizard needs an exit |
+| **Summary sidebar** | Sticky `320px` right panel, extend via `summarySections` | Replace with a custom one-off panel |
 | **Stepper connector** | `1px` solid line, `flex:1` grows between steps | Dotted, dashed, or thick (2px+) connectors |
-| **Save metadata** | "Last saved: X mins ago" · 12px · `var(--text-tertiary)` · green dot | Omit the save state — it is a required part of the wizard UX |
-| **Summary sidebar** | Sticky · right-aligned · `width: 320px` | Full-width sidebar or left-aligned |
-| **AI suggestion card** | White background, `var(--bg-subtle)` icon container, no gradient | Gradient background on the card body |
+| **Save metadata** | "Last saved: X mins ago" · 12px · `var(--text-tertiary)` · green dot | Omit the save state |
+| **Step content** | Wrap in `bg-white border border-[#D9D9E8] rounded-[8px] p-8` | Put content outside the white card |
+| **New channel** | Copy `CampaignSetupStep.tsx`, change only the fields | Invent a new layout from scratch |
