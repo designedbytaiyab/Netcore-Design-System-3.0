@@ -5,6 +5,56 @@
 
 ---
 
+## Table of Contents
+
+1. [Stack & Tooling Decisions](#0-stack--tooling-decisions)
+2. [AI Generation Rules](#05-ai-generation-rules)
+3. [Typography](#1-typography)
+4. [Colour System](#2-colour-system)
+5. [Spacing & Sizing](#3-spacing--sizing)
+6. [Shadows](#4-shadows)
+7. [Border Radius](#5-border-radius)
+8. [Components](#6-components)
+   - [6.1 Input Field](#61-input-field)
+   - [6.2 Button](#62-button)
+   - [6.3 Badge / Tag](#63-badge--tag)
+   - [6.4 Card](#64-card)
+   - [6.5 Navigation](#65-navigation-side-nav)
+   - [6.6 Modal / Dialog](#66-modal--dialog)
+   - [6.7 Alert / Banner](#67-alert--banner)
+   - [6.8 Table](#68-table)
+   - [6.9 Checkbox & Radio](#69-checkbox--radio)
+   - [6.10 Select / Dropdown](#610-select--dropdown)
+9. [Responsive Breakpoints](#7-responsive-breakpoints)
+10. [CSS Custom Properties](#8-css-custom-properties-full-token-sheet)
+11. [Decision Log](#9-decision-log)
+12. [Atomic Design Architecture](#10-atomic-design-architecture)
+13. [Universal Component States](#11-universal-component-states)
+14. [Extended Component Library](#12-extended-component-library)
+    - [12.1 Dropdown / Select Menu](#121-dropdown--select-menu)
+    - [12.2 Toggle / Switch](#122-toggle--switch)
+    - [12.3 Tabs](#123-tabs)
+    - [12.4 Tooltip](#124-tooltip)
+    - [12.5 Breadcrumb](#125-breadcrumb)
+    - [12.6 Pagination](#126-pagination)
+    - [12.7 Avatar](#127-avatar)
+    - [12.8 Accordion](#128-accordion)
+    - [12.9 Stepper](#129-stepper--progress-indicator)
+    - [12.10 Toast](#1210-notification--toast)
+    - [12.11 Data Table (extended)](#1211-data-table-extended)
+    - [12.12 Slider](#1212-slider--range-input)
+15. [Command Palette](#13-command-palette-ctrlk)
+16. [What Remains](#14-what-remains)
+17. [Campaign Creation Flow](#15-campaign-creation-flow)
+    - [15.1 Campaign Wizard Nav Header](#151-campaign-wizard-nav-header)
+    - [15.2 Step Progress Bar](#152-step-progress-bar-wizard-stepper)
+    - [15.3 Two-Column Wizard Layout](#153-two-column-wizard-layout)
+    - [15.4 Campaign Section Card](#154-campaign-section-card)
+    - [15.5 Summary Sidebar](#155-summary-sidebar)
+    - [15.6 AI Generation Rules](#156-ai-generation-rules--campaign-creation-flow)
+
+---
+
 ## 0. Stack & Tooling Decisions
 
 | Decision | Choice | Reason |
@@ -1424,3 +1474,417 @@ Building on the base table in §6.8:
 | Animation / transition tokens | 🔲 Deferred | Separate session |
 | Icon library | 🔲 Deferred | Inherit Untitled UI icon set |
 | Empty state illustrations | 🔲 Deferred | Per-section empty states |
+
+---
+
+## 15. Campaign Creation Flow
+
+> **Pattern:** Full-page wizard used for creating and configuring marketing campaigns (email, SMS, push, etc.).  
+> Composed of four layers — Campaign Wizard Nav Header · Step Progress Bar · Two-Column Wizard Layout · Summary Sidebar.  
+> **Source Figma frame:** [`Raman AI — Co-Marketer` node 15775:4579](https://www.figma.com/design/PpMyMSpfteIiBlbsBYryx2/Raman-AI---Co-Marketer---Co-Pilot?node-id=15775-4579)  
+> ⚠️ The Figma source uses `Nunito Sans` and `#0A8FFD`. These are **not** our tokens. Always apply Manrope + `#2F68E5` when implementing this pattern.
+
+---
+
+### 15.1 Campaign Wizard Nav Header
+
+The top bar that replaces the standard side-nav during wizard flows. Full-width, sticky, white background.
+
+**Anatomy (left → right):**
+
+| Zone | Content | Token / spec |
+|---|---|---|
+| **Left** | Channel icon 24×24 + Campaign name | 16px Manrope SemiBold · `var(--text-primary)` |
+| **Center** | `flex: 1` spacer | — |
+| **Right** | `Save` ghost btn · `Next Step` primary btn · `×` icon-ghost btn | Standard DS button sizes |
+
+**Structure rules:**
+- Height: `56px`
+- Background: `var(--bg-white)` (`#FFFFFF`)
+- Border-bottom: `1px solid var(--border-default)` (`#D9D9E8`)
+- Padding: `0 24px`
+- Position: `sticky top-0 z-40`
+
+```css
+.campaign-wizard-header {
+  height: 56px;
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border-default);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.campaign-wizard-header__title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.campaign-wizard-header__channel-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+}
+
+.campaign-wizard-header__campaign-name {
+  font-family: 'Manrope', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.campaign-wizard-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+```
+
+**Button rules in the wizard nav header:**
+
+| Button | Variant | Notes |
+|---|---|---|
+| Save | `btn-ghost` (border `var(--border-default)`, text `var(--text-primary)`) | Secondary action |
+| Next Step | `btn-primary` (filled `#2F68E5`) | Primary action — always rightmost |
+| × Close | `btn-icon-ghost` 36×36 | Icon-only, `var(--text-secondary)` |
+
+---
+
+### 15.2 Step Progress Bar (Wizard Stepper)
+
+Horizontal progress indicator placed directly below the campaign nav header. Shows the user's position across all wizard steps.
+
+```
+[✓ Setup] ─────────── [2 Content] ─────────── [3 Audience] ─────────── [4 Schedule]     ID: 1234 · ✓ Last saved: 39m ago
+```
+
+**Step states:**
+
+| State | Indicator | Label style | Connector colour |
+|---|---|---|---|
+| **Completed** | `#15B079` green circle + white ✓ checkmark | 14px Manrope SemiBold · `var(--text-primary)` | `#2F68E5` |
+| **Active** | `#2F68E5` blue circle + white step number | 14px Manrope SemiBold · `var(--text-primary)` | — |
+| **Pending** | White circle + `var(--border-default)` border + grey number | 14px Manrope Regular · `var(--text-tertiary)` | `var(--border-default)` |
+
+**Structure rules:**
+- Container height: `48px` · Padding: `0 24px`
+- Indicator circle: `24×24px` · `border-radius: 999px`
+- Step number / icon: 12px Manrope SemiBold
+- Label gap from indicator: `8px`
+- Connector: `1px` solid line · `flex: 1` · `margin: 0 12px`
+- Metadata block (`ID · Last saved`): right-aligned · 12px Manrope Regular · `var(--text-tertiary)` · green dot `6×6px` `#15B079` before "Last saved"
+
+```css
+.wizard-stepper {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  height: 48px;
+  background: transparent;
+}
+
+.wizard-stepper__step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.wizard-stepper__indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.wizard-stepper__indicator--completed { background: #15B079; color: #FFFFFF; }
+.wizard-stepper__indicator--active    { background: #2F68E5; color: #FFFFFF; }
+.wizard-stepper__indicator--pending   {
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-default);
+  color: var(--text-tertiary);
+}
+
+.wizard-stepper__label {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+}
+
+.wizard-stepper__label--completed,
+.wizard-stepper__label--active  { font-weight: 600; color: var(--text-primary); }
+.wizard-stepper__label--pending { font-weight: 400; color: var(--text-tertiary); }
+
+.wizard-stepper__connector {
+  flex: 1;
+  height: 1px;
+  margin: 0 12px;
+}
+
+.wizard-stepper__connector--completed { background: #2F68E5; }
+.wizard-stepper__connector--pending   { background: var(--border-default); }
+
+.wizard-stepper__metadata {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+}
+
+.wizard-stepper__save-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #15B079;
+  flex-shrink: 0;
+}
+```
+
+---
+
+### 15.3 Two-Column Wizard Layout
+
+The content area below the stepper. Flexible left main column + fixed-width summary sidebar.
+
+**Layout rules:**
+- Page background: `var(--bg-subtle)` (`#F5F7FF`)
+- Container: `max-width: 1440px` · `padding: 24px` · `margin: 0 auto`
+- Left column: `flex: 1 1 0` · `min-width: 600px`
+- Right column (sidebar): `width: 320px` · `flex-shrink: 0` · sticky at `top: 104px` (56px header + 48px stepper)
+- Column gap: `24px`
+
+```css
+.wizard-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: calc(100vh - 104px);
+}
+
+.wizard-layout__main {
+  flex: 1 1 0;
+  min-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.wizard-layout__sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 104px;
+}
+```
+
+---
+
+### 15.4 Campaign Section Card
+
+White card used in the main column to group related form fields for one wizard step.
+
+**Structure rules:**
+- Background: `var(--bg-white)` · Border: `1px solid var(--border-default)` · `border-radius: 8px`
+- Padding: `24px`
+- Gap between card header and form body: `32px`
+- Gap between form groups inside the card: `24px`
+- Card title: 18px Manrope Bold · `var(--text-primary)`
+- Card subtitle: 14px Manrope Regular · `var(--text-tertiary)`
+
+```css
+.campaign-section-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.campaign-section-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.campaign-section-card__title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.campaign-section-card__subtitle {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+```
+
+**AI Suggestion inner card** — nested inside a section card, used to surface AI-assisted actions (e.g. "Create this campaign with AI"):
+
+- Border: `1px solid var(--border-default)` · `border-radius: 6px` · Padding: `16px`
+- Icon container: `48×48px` · `border-radius: 24px` · `background: var(--bg-subtle)`
+- Card body gap: `16px`
+
+```css
+.ai-suggestion-card {
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ai-suggestion-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-suggestion-card__icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ai-suggestion-card__label {
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ai-suggestion-card__description {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+```
+
+---
+
+### 15.5 Summary Sidebar
+
+The sticky right panel. Displays a live, read-only preview of inputs across all wizard steps. Sections are collapsible accordions — the active step section is expanded by default.
+
+**Structure rules:**
+- Sidebar heading: 20px Manrope Bold · `var(--text-primary)`
+- Sidebar subtitle: 14px Manrope Regular · `var(--text-tertiary)` · `margin-bottom: 12px`
+- Each step section: white card `border: 1px solid var(--border-default)` · `border-radius: 8px`
+- Panel header height: `48px` · Padding: `14px 16px` · Shows step title + collapse chevron
+- Panel body padding: `0 16px 16px`
+- Row label: 13px Manrope SemiBold · `var(--text-primary)`
+- Row value: 13px Manrope Regular · `var(--text-tertiary)`
+- Gap between rows: `12px`
+
+```css
+.summary-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summary-sidebar__heading {
+  font-family: 'Manrope', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.summary-sidebar__subtitle {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  margin-bottom: 12px;
+}
+
+.summary-panel {
+  background: var(--bg-white);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.summary-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.summary-panel__title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.summary-panel__body {
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-row { display: flex; flex-direction: column; gap: 2px; }
+.summary-row__label { font: 600 13px/1.4 'Manrope', sans-serif; color: var(--text-primary); }
+.summary-row__value { font: 400 13px/1.4 'Manrope', sans-serif; color: var(--text-tertiary); }
+```
+
+---
+
+### 15.6 AI Generation Rules — Campaign Creation Flow
+
+> Apply these rules in addition to the global rules in §0.5 whenever the prompt mentions "campaign creation", "campaign wizard", "campaign setup", "new campaign", or "campaign builder".
+
+| Rule | ✅ DO | ❌ DON'T |
+|---|---|---|
+| **Font** | Manrope at all sizes, all weights | Nunito Sans / Nunito (that's the Figma source font — not our token) |
+| **Primary action colour** | `#2F68E5` for Next Step + all primary CTAs | `#0A8FFD` — this is the Figma file's token, not Netcore DS 3.0 |
+| **Active step indicator** | `#2F68E5` filled circle + white number | Purple or any other colour |
+| **Completed step indicator** | `#15B079` green circle + white checkmark | Blue for completed — completed = green only |
+| **Page background** | `var(--bg-subtle)` (`#F5F7FF`) | Pure white `#FFFFFF` or dark backgrounds as the page fill |
+| **Card border-radius** | `8px` on all cards | 6px, 5px, or 4px |
+| **Column layout** | Flex row — `flex:1` main + `width:320px` sidebar | Equal-column CSS grid or single-column stack |
+| **Toggle/switch active colour** | `#2F68E5` | Purple, grey, or teal |
+| **Section card title size** | 18px Manrope Bold | 20px+ inside a card (reserve 20px for page-level headings only) |
+| **Stepper connector** | `1px` solid line, `flex:1` grows between steps | Dotted, dashed, or thick (2px+) connectors |
+| **Save metadata** | "Last saved: X mins ago" · 12px · `var(--text-tertiary)` · green dot | Omit the save state — it is a required part of the wizard UX |
+| **Summary sidebar** | Sticky · right-aligned · `width: 320px` | Full-width sidebar or left-aligned |
+| **AI suggestion card** | White background, `var(--bg-subtle)` icon container, no gradient | Gradient background on the card body |
