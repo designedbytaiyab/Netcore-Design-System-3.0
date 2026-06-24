@@ -1,9 +1,66 @@
 ---
 name: netcore-design-system
-description: Apply the Netcore design system for any UI generation. Enforces Manrope font, brand blue #2F68E5, white inputs, 8px radius. CRITICAL — never violate: (1) inputs always white #FFFFFF, (2) font always Manrope, (3) toggles on-state always #2F68E5 blue never green. Trigger on /ds or /design-system commands, and automatically when any request combines a UI action (build, create, add, show, design, make, update) with Netcore product vocabulary: campaign, audience, segment, journey, automation, subscriber, contact, broadcast, email template, A/B test, analytics, open rate, CTR, settings, user management, wizard, builder, workflow, push notification, trigger, flow, or any SaaS admin interface.
+description: Apply the Netcore design system for any UI generation. Enforces Manrope font, brand blue #2F68E5, white inputs, 8px radius. Also builds pixel-accurate interactive prototypes from real Netcore screen designs — use when someone asks to prototype, replicate, or build a clickable version of any Netcore flow. CRITICAL — never violate: (1) inputs always white #FFFFFF, (2) font always Manrope, (3) toggles on-state always #2F68E5 blue never green. Trigger on /ds or /design-system commands, and automatically when any request combines a UI action (build, create, add, show, design, make, update, prototype, replicate, clone) with Netcore product vocabulary: campaign, audience, segment, journey, automation, subscriber, contact, broadcast, email template, A/B test, analytics, open rate, CTR, settings, user management, wizard, builder, workflow, push notification, trigger, flow, or any SaaS admin interface.
 ---
 
 # Netcore Design System
+
+This skill does two things:
+1. **Design system enforcement** — applies tokens, typography, and component rules to any UI generation
+2. **Prototype generation** — builds interactive, clickable React prototypes from real Netcore screen designs so PMs can walk through real flows
+
+---
+
+## How to handle any request
+
+**If the request is about building / prototyping a specific Netcore flow:**
+→ Go to the **Prototype Generation** section below. Load the flow's images first, then specs, then generate.
+
+**If the request is about styling, tokens, or general UI generation:**
+→ Go to the **Design System Rules** section below.
+
+---
+
+## PROTOTYPE GENERATION
+
+### Available Flows
+
+| Flow | Images | Specs | Figma Nodes |
+|---|---|---|---|
+| Campaign Creation (10 screens) | `assets/screens/campaign-creation/` | `flows/campaign-creation/specs.md` | `flows/campaign-creation/figma-nodes.md` |
+
+> To add a new flow in the future: create `flows/<flow-name>/specs.md` + `figma-nodes.md`, add screenshots to `assets/screens/<flow-name>/`, and add a row to the table above.
+
+### Trigger Keywords → Campaign Creation Flow
+Any of these phrases trigger the campaign creation prototype:
+`campaign creation flow` · `create a campaign` · `campaign wizard` · `campaign prototype` · `campaign flow` · `build the campaign` · `replicate the campaign` · `campaign type selection` · `campaign channel` · `campaign setup` · `campaign audience` · `campaign content` · `campaign schedule` · `campaign preview`
+
+### Workflow — Prototype Requests
+
+```
+1. Identify which screen(s) are needed from the trigger keyword
+2. Display the reference image: assets/screens/campaign-creation/0N-screen-name.png
+3. Read flows/campaign-creation/specs.md for interaction rules
+4. Read flows/campaign-creation/figma-nodes.md for exact dimensions
+5. Apply design system tokens from references/tokens.md
+6. Generate interactive React code — screens connected, navigation working
+7. Verify: does it match the reference image? Are interactions wired?
+```
+
+Displaying the image first is not optional — it grounds the output in the real design before any code is written.
+
+### Prototype Quality Standards
+- Client-side navigation only — no page reloads between screens
+- Modal panels slide in from right (300ms ease-out)
+- Stepper updates correctly as the user progresses through each step
+- Summary panel updates in real time as the user fills in fields
+- Success toasts appear bottom-right, auto-dismiss after 3 seconds
+- Every screen must match its reference image — if dimensions are unclear, call the Figma node
+- Do not invent any screen or interaction not documented in `flows/campaign-creation/specs.md`
+
+---
+
+## DESIGN SYSTEM RULES
 
 Apply these rules to every component, screen, and form. Do not invent values — use what is here.
 
