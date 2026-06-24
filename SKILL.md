@@ -16,6 +16,9 @@ This skill does two things:
 **If the request is about building / prototyping a specific Netcore flow:**
 → Go to the **Prototype Generation** section below. Load the flow's images first, then specs, then generate.
 
+**If the request is about UCE (User Communication Engine) or the email builder:**
+→ Go to the **UCE — Code-First Generation** section below. This flow has a different path depending on which tool you are running in.
+
 **If the request is about styling, tokens, or general UI generation:**
 → Go to the **Design System Rules** section below.
 
@@ -57,6 +60,69 @@ Displaying the image first is not optional — it grounds the output in the real
 - Success toasts appear bottom-right, auto-dismiss after 3 seconds
 - Every screen must match its reference image — if dimensions are unclear, call the Figma node
 - Do not invent any screen or interaction not documented in `flows/campaign-creation/specs.md`
+
+---
+
+## UCE — Code-First Generation
+
+UCE (User Communication Engine) has an existing codebase already built. The goal here is not to generate UI from scratch — it's to read the existing code, understand what's already been built, and use it as the base for any improvements or new screens. This gives PMs the real bare-bones of the feature to ideate on top of.
+
+**Source repo:** `https://github.com/aim-infinity/uce-email.git`
+
+### Trigger Keywords
+Any of these phrases trigger the UCE code-first workflow:
+`UCE` · `user communication engine` · `UCE email` · `email builder` · `UCE builder` · `improve UCE` · `UCE design` · `UCE prototype` · `UCE flow` · `email campaign builder`
+
+---
+
+### ⚠️ Access is environment-dependent — read this before proceeding
+
+This repo is private. Only **Lovable** has OAuth access to it. Claude Code does not and should not attempt to access it.
+
+---
+
+### PATH A — Running in Lovable (has repo access)
+
+Lovable has the `aim-infinity/uce-email` repo connected. You have full read access to the codebase.
+
+**Workflow:**
+```
+1. Scan the existing codebase — find all components, pages, and layouts
+2. Map what already exists: which screens are built, which components are reusable
+3. Display the relevant component files so the user can see the current state
+4. Apply DS 3.0 tokens (Manrope, #2F68E5, white inputs) on top of the existing code
+5. Extend or improve the design using the existing code as the skeleton
+6. Do not rebuild from scratch — reuse what is there
+```
+
+When a PM asks to "improve the UCE email builder" or "redesign the UCE flow":
+- Read the existing component files first
+- Show them what the current code produces
+- Then propose improvements on top of it — never replace the whole thing
+
+> File paths and component names will be filled in once repo access is confirmed. A placeholder note will be removed at that point.
+
+---
+
+### PATH B — Running in Claude Code (no repo access)
+
+Claude Code cannot access `aim-infinity/uce-email` — it is a private repo under a different GitHub org.
+
+**Do not attempt to clone or read this repo.**
+
+Instead:
+- Tell the user: "UCE code-first generation requires Lovable — the repo is private and only accessible there."
+- Fall back to design system rules from `references/tokens.md` and `references/components.md`
+- Use DS 3.0 tokens to generate a best-effort UI, clearly labelled as a starting point — not based on the real codebase
+
+---
+
+### When repo access is granted to `designedbytaiyab`
+
+Once access is confirmed, this section will be updated with:
+- Exact file paths for key components
+- Component inventory (what exists, what's missing)
+- Which files to read first for each trigger phrase
 
 ---
 
