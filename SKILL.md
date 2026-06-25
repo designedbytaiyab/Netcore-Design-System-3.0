@@ -16,6 +16,9 @@ This skill does two things:
 **If the request is about building / prototyping a specific Netcore flow:**
 → Go to the **Prototype Generation** section below. Load the flow's images first, then specs, then generate.
 
+**If the request is about UCE (User Communication Engine) or the email builder:**
+→ Go to the **UCE — Code-First Generation** section below. This flow has a different path depending on which tool you are running in.
+
 **If the request is about styling, tokens, or general UI generation:**
 → Go to the **Design System Rules** section below.
 
@@ -25,9 +28,10 @@ This skill does two things:
 
 ### Available Flows
 
-| Flow | Images | Specs | Figma Nodes |
-|---|---|---|---|
-| Campaign Creation (10 screens) | `assets/screens/campaign-creation/` | `flows/campaign-creation/specs.md` | `flows/campaign-creation/figma-nodes.md` |
+| Flow | Images | Specs | Figma Nodes | Status |
+|---|---|---|---|---|
+| Campaign Creation (10 screens) | `assets/screens/campaign-creation/` | `flows/campaign-creation/specs.md` | `flows/campaign-creation/figma-nodes.md` | ✅ Ready |
+| UCE — Unified Content Editor | `assets/screens/uce/` *(pending)* | `flows/uce/specs.md` | `flows/uce/figma-nodes.md` | 🔲 Pending repo access |
 
 > To add a new flow in the future: create `flows/<flow-name>/specs.md` + `figma-nodes.md`, add screenshots to `assets/screens/<flow-name>/`, and add a row to the table above.
 
@@ -57,6 +61,173 @@ Displaying the image first is not optional — it grounds the output in the real
 - Success toasts appear bottom-right, auto-dismiss after 3 seconds
 - Every screen must match its reference image — if dimensions are unclear, call the Figma node
 - Do not invent any screen or interaction not documented in `flows/campaign-creation/specs.md`
+
+---
+
+## UCE — Unified Content Editor (Code-First Generation)
+
+UCE = **Unified Content Editor** — Netcore's drag-and-drop email template builder. It is NOT the campaign creation wizard. UCE is the editor where marketers build the actual email content: text blocks, images, product widgets, buttons, dynamic visibility rules.
+
+**Source repo (existing codebase):** `https://github.com/aim-infinity/uce-email.git`
+
+### What UCE actually is
+
+UCE is a 3-panel email editor:
+- **Left panel** — Element library: Layouts, Basic Elements (Heading, Paragraph, Image, Video, Divider, Spacer, Button, Social Links, HTML Block, Table), Widgets (Coupons, Products), Saved Blocks
+- **Canvas** — Drag-and-drop workspace. Hover any block → Add / Copy / Delete / Save toolbar appears
+- **Right panel** — Properties per selected element: General tab (padding, alignment, width, mobile toggle) + Style tab (background, gradient, border, shadow)
+
+Key features inside UCE:
+- **Dynamic Blocks** — show/hide content based on user attributes (city, purchase history, segment). Set rules with AND/OR logic or paste custom visibility code
+- **Product Widget** — dynamic (recommendations/collection/merchandising triggers) or static product display. Up to 10 per row, 7 configurable attributes, grid or list layout
+- **Image Editor** — crop, resize, rotate, filters, finetune (brightness/warmth/clarity), annotate, watermark. Desktop view only. Max 1.2 MB
+- **Mobile Responsiveness** — toggle desktop/mobile view, hide elements per breakpoint, padding controls
+- **Saved Blocks** — reusable Header/Body/Footer blocks. Global edits propagate to all templates; or unlink for single-use
+- **Auto-Save** — near real-time draft saving, two restorable versions. Email channel only, requires account flag
+- **AMP Emails** — interactive email mode with forms and product carousels inside the email itself
+
+### Trigger Keywords
+
+Any of these phrases trigger the UCE workflow:
+`UCE` · `unified content editor` · `email builder` · `email template builder` · `drag and drop editor` · `email editor` · `UCE builder` · `improve UCE` · `UCE design` · `UCE prototype` · `UCE flow` · `email campaign builder` · `dynamic block` · `product widget in email` · `saved block` · `AMP email` · `email template` · `template editor`
+
+---
+
+### Before generating anything — ask these questions first
+
+A PM asking to "improve UCE" or "redesign the email builder" is making a wide request. **Challenge them before designing:**
+
+- **Which panel is the pain point?** Left (element library), canvas, or right (properties)?
+- **What task is too hard right now?** Adding images? Configuring dynamic blocks? Mobile preview? Saving blocks?
+- **Is this for a standard email or AMP/interactive email?** Different editors, different constraints.
+- **Who is the primary user?** Marketer (needs simplicity), designer (needs control), developer (may want HTML block)?
+- **What's currently broken or slow?** Too many clicks to reach a feature? Hard to find elements? Property panel confusing?
+- **Do they know saved blocks exist?** Often PMs ask for a feature that already ships.
+
+Do not skip this step. Generate a design only after you understand the specific problem.
+
+---
+
+### ⚠️ Access is environment-dependent — read this before generating
+
+The UCE codebase is private (`aim-infinity/uce-email`). Access depends on which tool you are running in.
+
+---
+
+### PATH A — Running in Lovable (has repo access)
+
+Lovable has the `aim-infinity/uce-email` repo connected via OAuth. You have full read access.
+
+**Source repo:** `https://github.com/aim-infinity/uce-email.git`
+
+---
+
+#### STEP 0 — ALWAYS do this before writing a single line of code
+
+**Create a new branch. Never work on `main`.**
+
+```
+Branch naming: uce-[short-description]-[YYYY-MM-DD]
+Examples:
+  uce-dynamic-block-redesign-2026-06-25
+  uce-left-panel-improvements-2026-06-25
+  uce-product-widget-layout-2026-06-25
+```
+
+Tell the user: "I'll create a branch `uce-[description]` from main so your changes are isolated and main stays untouched. You can review before merging."
+
+This is non-negotiable. A PM request built on main = risk to the live product.
+
+---
+
+#### STEP 1 — Read the existing codebase on the new branch
+
+```
+1. Create the branch from main (branch name follows convention above)
+2. Scan the full codebase — components/, pages/, layouts/, hooks/
+3. Map what exists: list the key files and what each one renders
+4. Show the PM a summary: "Here's what's already built — [file list]"
+```
+
+**UCE-specific areas to scan first:**
+- Canvas rendering components
+- Left panel element list + drag-and-drop handlers
+- Right panel property controls (General + Style tabs)
+- Dynamic block rule builder
+- Product widget configuration
+- Saved blocks modal
+
+---
+
+#### STEP 2 — Understand the PM's request
+
+Ask the clarifying questions from the section above before generating anything. Do not skip.
+
+---
+
+#### STEP 3 — Build on the branch
+
+```
+1. Identify which existing files to modify vs. which new files to create
+2. Reuse existing components — never rebuild what already exists
+3. Apply DS 3.0 tokens: Manrope, #2F68E5, white inputs (#FFFFFF), 8px radius
+4. Build the PM's request on top of the existing code skeleton
+5. Show a before/after — what the component looked like vs. what it looks like now
+6. Flag any design decisions the PM needs to approve before this could merge to main
+```
+
+---
+
+#### STEP 4 — Handoff
+
+Tell the PM:
+- "Your changes are on branch `uce-[name]`. Main is untouched."
+- "To use this: review the changes, then merge to main when you're happy."
+- "If you want to iterate, just ask — I'll keep building on the same branch."
+
+> File paths will be updated once `designedbytaiyab` receives collaborator access on `aim-infinity/uce-email`.
+
+---
+
+### PATH B — Running in Claude Code (no repo access)
+
+Claude Code cannot access `aim-infinity/uce-email` — private repo under a different org.
+
+**Do not attempt to clone or read this repo.**
+
+Instead:
+1. Tell the user: "UCE code-first generation requires Lovable — that's where the private codebase is connected."
+2. Ask the clarifying questions above to understand what specific screen or panel they need
+3. Fall back to DS 3.0 tokens from `references/tokens.md` and `references/components.md`
+4. Generate a best-effort UI clearly labelled "DS 3.0 starting point — not based on the live codebase"
+5. Flag which parts would need reconciliation against the real UCE code before shipping
+
+---
+
+### PM vocabulary → UCE feature map
+
+| PM says | UCE feature to reference |
+|---|---|
+| "email template builder" | UCE — the whole editor |
+| "drag and drop editor" | Canvas + left panel |
+| "add a button to the email" | Button element, right panel config |
+| "product recommendations block" | Product Widget, dynamic mode |
+| "show different content to different users" | Dynamic Blocks with visibility rules |
+| "email broken on mobile" | Mobile responsiveness toggle, element hide |
+| "save as reusable block" | Saved Blocks → star icon → type + name |
+| "interactive email" | AMP UCE editor |
+| "coupon in the email" | Coupon Widget (static or dynamic) |
+| "personalize the image" | Image element personalization field |
+| "auto-save draft" | Auto-Save (account flag must be enabled) |
+
+---
+
+### When repo access is granted to `designedbytaiyab`
+
+Update this section with:
+- Exact file paths for canvas, left panel, right panel, dynamic block components
+- Component inventory (what's built vs. missing)
+- Which files to read first per trigger phrase
 
 ---
 

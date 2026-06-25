@@ -5,6 +5,13 @@ Format: `[version] — date` · Added / Changed / Fixed
 
 ---
 
+## [1.2.0] — 25 Jun 2026
+
+### Changed
+- `SKILL.md` — UCE section fully rewritten with real product knowledge sourced from cedocs.netcorecloud.com. Now includes: correct definition of UCE (Unified Content Editor, not User Communication Engine), 3-panel layout spec (left/canvas/right), all block types, Dynamic Blocks, Product Widget, Image Editor, Saved Blocks, Auto-Save, AMP email. Added PM vocabulary map and mandatory clarifying questions AI must ask before generating any UCE design. PATH A (Lovable) and PATH B (Claude Code) flows updated with UCE-specific component areas to scan. Trigger keywords expanded to cover all natural-language ways a PM would reference UCE.
+
+---
+
 ## [1.1.0] — 24 Jun 2026
 
 ### Added
