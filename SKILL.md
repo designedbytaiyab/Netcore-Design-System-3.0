@@ -117,24 +117,72 @@ The UCE codebase is private (`aim-infinity/uce-email`). Access depends on which 
 
 Lovable has the `aim-infinity/uce-email` repo connected via OAuth. You have full read access.
 
-**Workflow:**
+**Source repo:** `https://github.com/aim-infinity/uce-email.git`
+
+---
+
+#### STEP 0 — ALWAYS do this before writing a single line of code
+
+**Create a new branch. Never work on `main`.**
+
 ```
-1. Scan the codebase — find all components, pages, and layouts
-2. Map what already exists: which screens are built, which components are reusable
-3. Show the relevant component files so the PM can see the current state
-4. Ask the clarifying questions above — understand the specific problem before touching code
-5. Apply DS 3.0 tokens (Manrope, #2F68E5, white inputs) on top of the existing code
-6. Extend or improve — reuse what is there, never rebuild from scratch
-7. Show the PM the result and flag any design decisions they need to approve
+Branch naming: uce-[short-description]-[YYYY-MM-DD]
+Examples:
+  uce-dynamic-block-redesign-2026-06-25
+  uce-left-panel-improvements-2026-06-25
+  uce-product-widget-layout-2026-06-25
 ```
 
-**UCE-specific component areas to scan first:**
+Tell the user: "I'll create a branch `uce-[description]` from main so your changes are isolated and main stays untouched. You can review before merging."
+
+This is non-negotiable. A PM request built on main = risk to the live product.
+
+---
+
+#### STEP 1 — Read the existing codebase on the new branch
+
+```
+1. Create the branch from main (branch name follows convention above)
+2. Scan the full codebase — components/, pages/, layouts/, hooks/
+3. Map what exists: list the key files and what each one renders
+4. Show the PM a summary: "Here's what's already built — [file list]"
+```
+
+**UCE-specific areas to scan first:**
 - Canvas rendering components
 - Left panel element list + drag-and-drop handlers
 - Right panel property controls (General + Style tabs)
 - Dynamic block rule builder
 - Product widget configuration
 - Saved blocks modal
+
+---
+
+#### STEP 2 — Understand the PM's request
+
+Ask the clarifying questions from the section above before generating anything. Do not skip.
+
+---
+
+#### STEP 3 — Build on the branch
+
+```
+1. Identify which existing files to modify vs. which new files to create
+2. Reuse existing components — never rebuild what already exists
+3. Apply DS 3.0 tokens: Manrope, #2F68E5, white inputs (#FFFFFF), 8px radius
+4. Build the PM's request on top of the existing code skeleton
+5. Show a before/after — what the component looked like vs. what it looks like now
+6. Flag any design decisions the PM needs to approve before this could merge to main
+```
+
+---
+
+#### STEP 4 — Handoff
+
+Tell the PM:
+- "Your changes are on branch `uce-[name]`. Main is untouched."
+- "To use this: review the changes, then merge to main when you're happy."
+- "If you want to iterate, just ask — I'll keep building on the same branch."
 
 > File paths will be updated once `designedbytaiyab` receives collaborator access on `aim-infinity/uce-email`.
 
