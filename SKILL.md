@@ -28,9 +28,10 @@ This skill does two things:
 
 ### Available Flows
 
-| Flow | Images | Specs | Figma Nodes |
-|---|---|---|---|
-| Campaign Creation (10 screens) | `assets/screens/campaign-creation/` | `flows/campaign-creation/specs.md` | `flows/campaign-creation/figma-nodes.md` |
+| Flow | Images | Specs | Figma Nodes | Status |
+|---|---|---|---|---|
+| Campaign Creation (10 screens) | `assets/screens/campaign-creation/` | `flows/campaign-creation/specs.md` | `flows/campaign-creation/figma-nodes.md` | ✅ Ready |
+| UCE — Unified Content Editor | `assets/screens/uce/` *(pending)* | `flows/uce/specs.md` | `flows/uce/figma-nodes.md` | 🔲 Pending repo access |
 
 > To add a new flow in the future: create `flows/<flow-name>/specs.md` + `figma-nodes.md`, add screenshots to `assets/screens/<flow-name>/`, and add a row to the table above.
 
