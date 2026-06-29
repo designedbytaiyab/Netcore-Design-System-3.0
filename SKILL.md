@@ -461,6 +461,22 @@ When a PM describes UI in plain language, map it to design system components:
 
 ---
 
+## Copywriting (`copywriting/` folder)
+
+All copy rules live in the **`copywriting/`** folder. Load `copywriting/SKILL.md` when the user asks about copy, not root `SKILL.md`.
+
+**Triggers:** `/copy` · `/netcorian` · `/ux-writing` · or user says write copy, UX writing, microcopy, button label, error message, empty state, tooltip, toast, modal copy, CTA, onboarding, nudge, release notes, Netcorian, brand voice, in our voice, review copy.
+
+| File | Purpose |
+|---|---|
+| `copywriting/SKILL.md` | Copy skill entry point — install this for `/copy` |
+| `copywriting/spec.md` | Full Netcorian spec |
+| `copywriting/references/` | voice · rules · patterns · workflows · templates |
+
+Do not invent microcopy when building UI. Load `copywriting/SKILL.md` or ask the user for approved strings.
+
+---
+
 ## Campaign creation flow
 
 When building any campaign creation screen (Email, WhatsApp, SMS, Push, RCS, or any new channel):

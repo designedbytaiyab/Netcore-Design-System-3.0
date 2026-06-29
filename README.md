@@ -80,13 +80,30 @@ curl -o ~/.claude/skills/netcore-design-system/SKILL.md \
 ## Files in this repo
 
 ```
-SKILL.md                   ← The skill. This is what you install.
+SKILL.md                   ← Visual design skill (/ds). This is what you install for UI.
+design-system.md           ← Full visual spec — tokens, type scale, all components, decision log
 references/
   tokens.md                ← Full CSS token sheet (:root block + Tailwind config)
   components.md            ← Input, button, badge, card, modal, table
   extended.md              ← Stepper, tabs, pagination, accordion, data table, slider
-design-system.md           ← The full spec — tokens, type scale, all components, decision log
+copywriting/                 ← COPYWRITING SKILL FOLDER — install copywriting/SKILL.md for /copy
+  SKILL.md                   ← Copy skill entry (/copy · /netcorian · /ux-writing)
+  README.md                  ← Folder guide and trigger list
+  spec.md                    ← Full Netcorian copy spec (companion to design-system.md)
+  references/
+    voice.md                 ← Voice, tone, principles
+    rules.md                 ← Person, tense, case, punctuation
+    patterns.md              ← Surface patterns (buttons, errors, nudges)
+    workflows.md             ← Draft + pre-ship checklists
+    templates.md             ← Feature, wizard, release note templates
 ```
+
+### Two skills, one repo
+
+| Skill | Install path | Trigger | Governs |
+|---|---|---|---|
+| Visual design | `SKILL.md` (repo root) | `/ds` | Colours, fonts, components, layout |
+| Copywriting | `copywriting/SKILL.md` | `/copy` | UI strings, voice, tone, microcopy |
 
 ---
 
