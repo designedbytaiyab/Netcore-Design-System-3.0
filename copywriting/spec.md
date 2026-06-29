@@ -2,7 +2,7 @@
 
 > **Source:** [Infinity DS 2.0 on zeroheight](https://netcore.zeroheight.com/759faf070/p/747aa5-introduction) — Overview, Principles, Communication, UX Writing, Usability Testing, Resources.  
 > **Purpose:** Single reference for AI agents and humans writing product copy, plans, workflows, and customer-facing content in Netcore's voice.  
-> **Design system companion:** Visual/UI rules live in `design-system.md`. This file governs **words, tone, and decision-making**.
+> **Design system companion:** Visual/UI rules live in `../design-system.md` and root `../SKILL.md`. This file governs **words, tone, and decision-making**.
 
 ---
 
@@ -338,7 +338,7 @@ Use these structures so AI and humans produce consistent output.
 When an AI agent writes Netcore copy, it must:
 
 1. **Read this file first** for voice, principles, and gates.
-2. **Read `design-system.md`** only for UI string length/layout constraints — not for voice.
+2. **Read `../design-system.md`** only for UI string length/layout constraints — not for voice.
 3. **Default to Netcorian:** brave, unifying, authoritative + concise, simple, clear.
 4. **Never invent product names** — use the table in §1.
 5. **Output copy in tables** (surface × title × body × CTA) for reviewability.
@@ -351,7 +351,7 @@ When an AI agent writes Netcore copy, it must:
 ```
 Write [surface] copy for Netcore [product].
 User job: [job]
-Follow netcore-brand-copywriting.md — Netcorian voice, design principles, case rules.
+Follow copywriting/spec.md — Netcorian voice, design principles, case rules.
 Return a table: Surface | Title | Body | CTA | Notes
 ```
 
@@ -401,7 +401,7 @@ Content on zeroheight **UX Writing** sub-pages (*Writing Essentials*, *Checklist
 
 1. Export or paste those tab contents into this repo to complete the checklist and voice markers.
 2. Reconcile nudge button colour (`#143F93` vs DS 3.0 `#2F68E5`) in one authoritative note.
-3. Promote this file to a formal Cursor skill when ready (`netcore-copywriting/SKILL.md`).
+3. Promote this folder as the install target: `copywriting/SKILL.md`.
 
 ---
 

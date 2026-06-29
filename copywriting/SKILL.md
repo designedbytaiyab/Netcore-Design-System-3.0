@@ -1,11 +1,23 @@
 ---
 name: netcore-copywriting
-description: Write Netcore product copy in Netcorian voice for UX writing, microcopy, CTAs, error messages, empty states, modals, tooltips, onboarding, campaign wizard labels, and Raman AI messaging. Enforces brave/unifying/authoritative voice, jobs-to-be-done framing, user vocabulary not jargon, no em dashes. Trigger on /copy or /netcorian, and when any request involves writing, rewriting, or reviewing UI strings, button labels, alerts, release notes, or customer-facing copy for Netcore CEE, CDP, PX, Email API, or Raman.
+description: >-
+  Netcorian copywriting for Netcore products. Write or review UX writing, microcopy,
+  button labels, CTAs, error messages, empty states, tooltips, toasts, modals,
+  confirmations, onboarding text, nudges, campaign wizard copy, segmentation labels,
+  journey builder copy, release notes, Raman AI messaging, and customer-facing strings.
+  Enforces brave/unifying/authoritative voice, jobs-to-be-done framing, user vocabulary
+  not jargon, no em dashes. Trigger on /copy, /netcorian, /ux-writing, or when the user
+  says write copy, rewrite copy, UX writing, microcopy, button text, error message,
+  empty state, tooltip text, toast message, modal copy, CTA label, onboarding copy,
+  nudge copy, release notes, in our voice, Netcorian, brand voice, tone of voice,
+  wording, label text, helper text, placeholder text, alert message, or review this copy.
 ---
 
 # Netcore Copywriting (Netcorian)
 
-Apply these rules to every UI string, alert, empty state, modal, nudge, and customer-facing message. This skill governs **words only**. For colours, fonts, and layout use root `SKILL.md` and `design-system.md`.
+> **Folder:** `copywriting/` — all copy rules live here. Visual/UI rules live in root `SKILL.md` and `design-system.md`.
+
+Apply these rules to every UI string, alert, empty state, modal, nudge, and customer-facing message.
 
 ---
 
@@ -45,31 +57,48 @@ OUTPUT    → Table: Surface | Title | Body | CTA | Notes
 
 ## SECONDARY — When to trigger
 
-### Explicit triggers
-- `/copy [prompt]` or `/netcorian [prompt]`
+### Explicit triggers (user types these)
 
-### Implicit triggers
-Activate when the request involves: UX writing, microcopy, button label, error message, empty state, tooltip, toast, modal copy, onboarding text, nudge copy, release notes, campaign wizard labels, Raman messaging, or "rewrite this in our voice".
+| Command | Example |
+|---|---|
+| `/copy` | `/copy write error messages for campaign setup` |
+| `/netcorian` | `/netcorian rewrite this CTA in our brand voice` |
+| `/ux-writing` | `/ux-writing review these modal strings` |
 
-### Does not trigger
-- Pure UI layout or CSS requests with no copy to write (use root `SKILL.md`)
+### Implicit triggers — user phrases
+
+Activate this skill when the request contains any of these intents or words:
+
+**Writing actions:** write copy · rewrite copy · draft copy · improve copy · review copy · edit copy · polish copy · fix copy · wordsmith · wording · phrasing · in our voice · brand voice · tone of voice · Netcorian · Netcore voice
+
+**UX writing:** UX writing · UX copy · microcopy · UI copy · interface copy · product copy · in-app copy
+
+**Surfaces:** button label · button text · CTA · call to action · error message · validation message · empty state · tooltip · toast · banner · alert · modal copy · confirmation · dialog text · onboarding · nudge · helper text · placeholder · field label · form label · status label · release notes · changelog copy
+
+**Netcore product context:** campaign copy · wizard copy · audience copy · segment copy · journey copy · Raman message · co-marketer copy · CEE copy · CDP copy · email copy · push notification copy
+
+### Does NOT trigger (use root `SKILL.md` instead)
+
+- Build, design, prototype, or style UI with no copy to write
+- Colour, font, spacing, component, or layout requests
 - Generic marketing with no Netcore product context
 
-### Visual design
-For tokens, components, spacing → root `SKILL.md` + `design-system.md`. Do not invent colours or fonts here.
+### Visual design boundary
+
+For tokens, components, spacing → root `SKILL.md` + `design-system.md`. Do not invent colours or fonts in this skill.
 
 ---
 
-## Reference files
+## Reference files (all inside `copywriting/`)
 
 | File | When to read |
 |---|---|
-| `copywriting/references/voice.md` | Voice, tone, design principles → copy |
-| `copywriting/references/rules.md` | Person, tense, case, punctuation, ship gate |
-| `copywriting/references/patterns.md` | Buttons, errors, empty states, modals, nudges, journeys |
-| `copywriting/references/workflows.md` | Draft workflow, pre-ship checklist, user testing gates |
-| `copywriting/references/templates.md` | Feature copy plan, wizard steps, release notes |
-| `brand-copywriting.md` | Full consolidated spec when auditing or onboarding |
+| `references/voice.md` | Voice, tone, design principles → copy |
+| `references/rules.md` | Person, tense, case, punctuation, ship gate |
+| `references/patterns.md` | Buttons, errors, empty states, modals, nudges, journeys |
+| `references/workflows.md` | Draft workflow, pre-ship checklist, user testing gates |
+| `references/templates.md` | Feature copy plan, wizard steps, release notes |
+| `spec.md` | Full consolidated spec when auditing or onboarding |
 
 ---
 
@@ -81,7 +110,7 @@ For tokens, components, spacing → root `SKILL.md` + `design-system.md`. Do not
 4. Tone check: concise, simple, clear, witty if appropriate?
 5. Hard rules: person, tense, case, no em dashes, no jargon
 6. Match terms used elsewhere (segment, audience, campaign)
-7. Output as a table; run pre-ship checklist from `workflows.md`
+7. Output as a table; run pre-ship checklist from `references/workflows.md`
 
 ---
 
@@ -94,4 +123,4 @@ For tokens, components, spacing → root `SKILL.md` + `design-system.md`. Do not
 - [ ] Novice and veteran would both understand
 - [ ] Usability scores ≥ 4 if tested
 
-Full checklist → `copywriting/references/workflows.md`
+Full checklist → `references/workflows.md`

@@ -86,18 +86,24 @@ references/
   tokens.md                ← Full CSS token sheet (:root block + Tailwind config)
   components.md            ← Input, button, badge, card, modal, table
   extended.md              ← Stepper, tabs, pagination, accordion, data table, slider
-copywriting/
-  SKILL.md                 ← Copywriting skill (/copy). Netcorian voice and UX writing rules.
-  references/              ← voice, rules, patterns, workflows, templates
-brand-copywriting.md       ← Full copywriting spec (companion to design-system.md)
+copywriting/                 ← COPYWRITING SKILL FOLDER — install copywriting/SKILL.md for /copy
+  SKILL.md                   ← Copy skill entry (/copy · /netcorian · /ux-writing)
+  README.md                  ← Folder guide and trigger list
+  spec.md                    ← Full Netcorian copy spec (companion to design-system.md)
+  references/
+    voice.md                 ← Voice, tone, principles
+    rules.md                 ← Person, tense, case, punctuation
+    patterns.md              ← Surface patterns (buttons, errors, nudges)
+    workflows.md             ← Draft + pre-ship checklists
+    templates.md             ← Feature, wizard, release note templates
 ```
 
 ### Two skills, one repo
 
-| Skill | Trigger | Governs |
-|---|---|---|
-| `SKILL.md` | `/ds` | Colours, fonts, components, layout |
-| `copywriting/SKILL.md` | `/copy` | UI strings, voice, tone, microcopy |
+| Skill | Install path | Trigger | Governs |
+|---|---|---|---|
+| Visual design | `SKILL.md` (repo root) | `/ds` | Colours, fonts, components, layout |
+| Copywriting | `copywriting/SKILL.md` | `/copy` | UI strings, voice, tone, microcopy |
 
 ---
 
