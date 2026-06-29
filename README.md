@@ -80,13 +80,24 @@ curl -o ~/.claude/skills/netcore-design-system/SKILL.md \
 ## Files in this repo
 
 ```
-SKILL.md                   ← The skill. This is what you install.
+SKILL.md                   ← Visual design skill (/ds). This is what you install for UI.
+design-system.md           ← Full visual spec — tokens, type scale, all components, decision log
 references/
   tokens.md                ← Full CSS token sheet (:root block + Tailwind config)
   components.md            ← Input, button, badge, card, modal, table
   extended.md              ← Stepper, tabs, pagination, accordion, data table, slider
-design-system.md           ← The full spec — tokens, type scale, all components, decision log
+copywriting/
+  SKILL.md                 ← Copywriting skill (/copy). Netcorian voice and UX writing rules.
+  references/              ← voice, rules, patterns, workflows, templates
+brand-copywriting.md       ← Full copywriting spec (companion to design-system.md)
 ```
+
+### Two skills, one repo
+
+| Skill | Trigger | Governs |
+|---|---|---|
+| `SKILL.md` | `/ds` | Colours, fonts, components, layout |
+| `copywriting/SKILL.md` | `/copy` | UI strings, voice, tone, microcopy |
 
 ---
 

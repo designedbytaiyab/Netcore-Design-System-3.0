@@ -5,6 +5,16 @@ Format: `[version] — date` · Added / Changed / Fixed
 
 ---
 
+## [1.3.0] — 17 Jun 2026
+
+### Added
+- `brand-copywriting.md` — full Netcorian copywriting spec (voice, principles, patterns, workflows)
+- `copywriting/SKILL.md` — installable copywriting skill with `/copy` and `/netcorian` triggers
+- `copywriting/references/` — progressive disclosure: voice, rules, patterns, workflows, templates
+- Cross-links from `SKILL.md`, `design-system.md`, and `README.md`
+
+---
+
 ## [1.2.0] — 25 Jun 2026
 
 ### Changed

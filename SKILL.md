@@ -461,6 +461,14 @@ When a PM describes UI in plain language, map it to design system components:
 
 ---
 
+## Copywriting
+
+For UI strings, error messages, CTAs, empty states, and Netcorian voice → `copywriting/SKILL.md` and `brand-copywriting.md`.
+
+Do not invent microcopy when building UI. Read the copywriting skill or ask the user for approved strings.
+
+---
+
 ## Campaign creation flow
 
 When building any campaign creation screen (Email, WhatsApp, SMS, Push, RCS, or any new channel):

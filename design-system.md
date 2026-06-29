@@ -1,7 +1,8 @@
 # Design System — Complete Reference
 > Feed this file to Lovable, Claude, or any AI codegen tool to generate UI that follows this design system exactly.  
 > **Parent system:** [Untitled UI v2.0 — FREE Figma UI kit](https://www.figma.com/design/CjXAv82xiIZH2gABXfbHxB/%E2%9D%96-Untitled-UI-%E2%80%93-FREE-Figma-UI-kit-and-design-system-v2.0--Community-) — inherit component anatomy, states, spacing, and interaction patterns from Untitled UI; apply our token overrides below.  
-> Last updated: 2026-06-10
+> **Copywriting companion:** UI strings, voice, and Netcorian rules live in `brand-copywriting.md` and `copywriting/SKILL.md`. This file governs visual tokens and components only.  
+> Last updated: 2026-06-17
 
 ---
 
